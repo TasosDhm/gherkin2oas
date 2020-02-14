@@ -1,0 +1,485 @@
+basePath: /v1
+definitions:
+    admin_get_200_response:
+        example:
+        - {admin_id: 123, username: Kostas Sotiriou}
+        properties:
+            admin_id: {format: int32, type: integer}
+            username: {type: string}
+        required: [admin_id, username]
+        type: object
+    admin_post_request_body:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [administrator]
+                state: &id001
+                    pos_tag: NN
+                    string: !!python/object/new:textblob.blob.Word
+                        args: [administrator]
+                        state: {pos_tag: null, string: administrator}
+            : {$ref: '#/definitions/administrator'}
+        required:
+        - !!python/object/new:textblob.blob.Word
+            args: [administrator]
+            state: *id001
+        type: object
+    ? !!python/object/new:textblob.blob.Word
+        args: [administrator]
+        state: *id001
+    :   example:
+        - {admin id: 1, admin name: ADMIN01}
+        properties:
+            admin id: {format: int32, type: integer}
+            admin name: {type: string}
+        type: object
+    ? !!python/object/new:textblob.blob.Word
+        args: [comment]
+        state: &id002
+            pos_tag: NN
+            string: !!python/object/new:textblob.blob.Word
+                args: [comment]
+                state: {pos_tag: null, string: comment}
+    :   example:
+        - {comment content: I like most of your list, comment id: 12}
+        properties:
+            comment content: {type: string}
+            comment id: {format: int32, type: integer}
+        type: object
+    comment_post_request_body:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [comment]
+                state: *id002
+            : {$ref: '#/definitions/comment'}
+        required:
+        - !!python/object/new:textblob.blob.Word
+            args: [comment]
+            state: *id002
+        type: object
+    follow_list_post_request_body:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [followlist]
+                state: &id003
+                    pos_tag: NN
+                    string: !!python/object/new:textblob.blob.Word
+                        args: [followlist]
+                        state: {pos_tag: null, string: followlist}
+            : {$ref: '#/definitions/followlist'}
+        required:
+        - !!python/object/new:textblob.blob.Word
+            args: [followlist]
+            state: *id003
+        type: object
+    ? !!python/object/new:textblob.blob.Word
+        args: [followlist]
+        state: *id003
+    :   example:
+        -   users: [1, 5, 7, 12, 10]
+        properties:
+            users:
+                items: {format: int32, type: integer}
+                maxItems: 10000
+                type: array
+        type: object
+    list_get_default_response:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [name]
+                state:
+                    pos_tag: NN
+                    string: !!python/object/new:textblob.blob.Word
+                        args: [name]
+                        state: {pos_tag: null, string: name}
+            : {type: string}
+        type: object
+    list_post_request_body:
+        example:
+        - {category: series, date of release: 05/06/2010, description: Best series
+                since 1990, id: 30, listname: top 10 series, tag: mystery}
+        - {all: true}
+        properties:
+            all: {type: boolean}
+            category: {type: string}
+            date of release: {format: date, type: string}
+            description: {type: string}
+            id: {format: int32, type: integer}
+            listname: {type: string}
+            tag: {type: string}
+        type: object
+    list_put_request_body:
+        example:
+        - {listname: movies}
+        properties:
+            listname: {type: string}
+        type: object
+    rate_post_request_body:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [rating]
+                state: &id004
+                    pos_tag: NN
+                    string: !!python/object/new:textblob.blob.Word
+                        args: [rating]
+                        state: {pos_tag: null, string: rating}
+            : {$ref: '#/definitions/rating'}
+        required:
+        - !!python/object/new:textblob.blob.Word
+            args: [rating]
+            state: *id004
+        type: object
+    ? !!python/object/new:textblob.blob.Word
+        args: [rating]
+        state: *id004
+    :   example:
+        - {ratio: 7, ratio id: 4}
+        properties:
+            ratio: {format: int32, type: integer}
+            ratio id: {format: int32, type: integer}
+        type: object
+    search_get_200_response:
+        example:
+        -   sorted list: [highest ratio listname, medium ratio listname, lowest ratio
+                    listname]
+        properties:
+            sorted list:
+                items: {type: string}
+                maxItems: 15
+                type: array
+        required: [sorted list]
+        type: object
+    search_get_default_response:
+        example:
+        - {date of birth: 04/05/1992, email: anasdima@ece.auth.gr, id: 250, username: Tasos}
+        - {category: series, description: Best series since 1990, id: 30}
+        - {category: series, date of release: 05/06/2010, description: Best series
+                since 1990, id: 30}
+        properties:
+            category: {type: string}
+            date of birth: {format: date, type: string}
+            date of release: {format: date, type: string}
+            description: {type: string}
+            email: {type: string}
+            id: {format: int32, type: integer}
+            username: {type: string}
+        required: [id]
+        type: object
+    ? !!python/object/new:textblob.blob.Word
+        args: [user]
+        state: &id005
+            pos_tag: NN
+            string: !!python/object/new:textblob.blob.Word
+                args: [user]
+                state: {pos_tag: null, string: user}
+    :   example:
+        - {date of birth: 04/05/1992, email: anasdima@ece.auth.gr, id: 250, location: Thessaloniki,
+            photo: 'http://photo.com/myphoto', sex: male, status: online, trophy: name,
+            username: Tasos}
+        properties:
+            date of birth: {format: date, type: string}
+            email: {type: string}
+            id: {format: int32, type: integer}
+            location: {type: string}
+            password: {format: password, type: string}
+            photo: {type: string}
+            sex: {type: string}
+            status: {type: string}
+            trophy: {type: string}
+            username: {type: string}
+        type: object
+    user_get_default_response:
+        example:
+        - {username: Tasos}
+        - {status: is online, username: 'Michalis Pap '}
+        properties:
+            status: {type: string}
+            username: {type: string}
+        required: [username]
+        type: object
+    user_post_request_body:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [user]
+                state: *id005
+            : {$ref: '#/definitions/user'}
+        type: object
+    user_put_request_body:
+        example:
+        - {date of birth: 09-08-1002, location: Sweden, photo: 'http://imgur.com/rand_photo',
+            sex: Male, username: Nick}
+        - {trophy: trophytype}
+        properties:
+            date of birth: {format: date, type: string}
+            location: {type: string}
+            password: {format: password, minLength: 8, type: string}
+            photo: {type: string}
+            sex: {type: string}
+            trophy: {type: string}
+            username: {type: string}
+        type: object
+host: localhost
+info: {description: Demo, termsOfService: '', title: Example API, version: '1'}
+paths:
+    /admin:
+        post:
+            description: "- \tCreates a new single administrator."
+            parameters:
+            -   in: body
+                name: admin_post_request_body
+                required: true
+                schema: {$ref: '#/definitions/admin_post_request_body'}
+            responses:
+                '200': {description: Successfull new admin account}
+            security:
+            -   ? !!python/object/new:textblob.blob.Word
+                    args: [system]
+                    state: &id006
+                        pos_tag: NN
+                        string: !!python/object/new:textblob.blob.Word
+                            args: [system]
+                            state: {pos_tag: null, string: system}
+                : ['post:/admin']
+    /admin/{admin_id}:
+        get:
+            description: "- \tReturns data about a single administrator."
+            parameters:
+            - {format: int32, in: path, name: admin_id, required: true, type: integer}
+            responses:
+                '200':
+                    description: OK
+                    schema: {$ref: '#/definitions/admin_get_200_response'}
+                '404': {description: Admin doesn't exist}
+            security:
+            -   ? !!python/object/new:textblob.blob.Word
+                    args: [system]
+                    state: *id006
+                : ['get:/admin/{id}']
+    /search:
+        get:
+            description: "- \tReturns data about a single user.\n- \tReturns data\
+                \ about a single list.\n- \tReturns data about a single list.\n- \t\
+                Returns the lists with the bigest ratio."
+            parameters:
+            -   in: query
+                name: !!python/object/new:textblob.blob.Word
+                    args: [username]
+                    state:
+                        pos_tag: NN
+                        string: !!python/object/new:textblob.blob.Word
+                            args: [username]
+                            state: {pos_tag: null, string: username}
+                required: false
+                type: string
+            - {in: query, name: listname, required: false, type: string}
+            - {format: date, in: query, name: date of release, required: false, type: string}
+            - {format: int32, in: query, name: ratio, required: false, type: integer}
+            - {in: query, name: sort, required: false, type: string}
+            responses:
+                '200':
+                    description: OK
+                    schema: {$ref: '#/definitions/search_get_200_response'}
+                '401': {description: You are unauthorized to make this request.}
+                '404': {description: none found}
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/search_get_default_response'}
+    /user:
+        post:
+            description: "- \tCreates a single user"
+            parameters:
+            -   in: body
+                name: user_post_request_body
+                schema: {$ref: '#/definitions/user_post_request_body'}
+            responses:
+                '200': {description: Successfull new account}
+                '401': {description: You are unauthorized to make this request.}
+            security:
+            -   ? !!python/object/new:textblob.blob.Word
+                    args: [administrator]
+                    state: &id010
+                        pos_tag: NN
+                        string: !!python/object/new:textblob.blob.Word
+                            args: [administrator]
+                            state: {pos_tag: null, string: administrator}
+                : ['post:/user']
+    /user/{id}:
+        delete:
+            description: "- \tDeletes a single user"
+            parameters:
+            -   format: int32
+                in: path
+                name: !!python/object/new:textblob.blob.Word
+                    args: [id]
+                    state: &id007
+                        pos_tag: NN
+                        string: !!python/object/new:textblob.blob.Word
+                            args: [id]
+                            state: {pos_tag: null, string: id}
+                required: true
+                type: integer
+            responses:
+                '200': {description: User deleted successfully}
+                '401': {description: You are unauthorized to make this request.}
+                '404': {description: User doesn't exist}
+        get:
+            description: "- \tShows details of single user\n- \tReturns status about\
+                \ a single user. Valid status requests are 'online', 'offline', 'away'\
+                \ and\n\t'busy'. The response will be \"is <user's status>\""
+            parameters:
+            - &id008
+                format: int32
+                in: path
+                name: !!python/object/new:textblob.blob.Word
+                    args: [id]
+                    state:
+                        pos_tag: NN
+                        string: !!python/object/new:textblob.blob.Word
+                            args: [id]
+                            state: {pos_tag: null, string: id}
+                required: true
+                type: integer
+            - {in: query, name: status, required: false, type: string}
+            responses:
+                '401': {description: You are unauthorized to make this request.}
+                '404': {description: User doesn't exist}
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/user_get_default_response'}
+        put:
+            description: "- \tUpdate your user profile\n- \tGive trophy to particular\
+                \ user."
+            parameters:
+            -   format: int32
+                in: path
+                name: !!python/object/new:textblob.blob.Word
+                    args: [id]
+                    state: *id007
+                required: true
+                type: integer
+            -   in: body
+                name: user_put_request_body
+                schema: {$ref: '#/definitions/user_put_request_body'}
+            responses:
+                '200': {description: Successfully updated}
+                '401': {description: You are unauthorized to make this request.}
+                '404': {description: User doesn't exist}
+    /user/{id}/follow_list:
+        post:
+            parameters:
+            -   in: body
+                name: follow_list_post_request_body
+                required: true
+                schema: {$ref: '#/definitions/follow_list_post_request_body'}
+            - *id008
+            responses:
+                '200': {description: OK}
+    /user/{id}/list:
+        post:
+            description: "- \tCreate a new single list for a user.\n- \tReturns all\
+                \ lists of a particular user."
+            parameters:
+            -   in: body
+                name: list_post_request_body
+                schema: {$ref: '#/definitions/list_post_request_body'}
+            - *id008
+            responses:
+                '200': {description: OK}
+                '201': {description: List created}
+                '401': {description: You are unauthorized to make this request.}
+                '404': {description: List not created}
+    /user/{id}/list/{id}:
+        delete:
+            description: "- \tDelete a single list of a particular user."
+            parameters:
+            -   format: int32
+                in: path
+                name: !!python/object/new:textblob.blob.Word
+                    args: [id]
+                    state: &id009
+                        pos_tag: NN
+                        string: !!python/object/new:textblob.blob.Word
+                            args: [id]
+                            state: {pos_tag: null, string: id}
+                required: true
+                type: integer
+            responses:
+                '200': {description: List deleted successfully}
+                '401': {description: You are unauthorized to make this request.}
+                '404': {description: List doesn't exist}
+        get:
+            description: "- \tReturns a single list of a particular user."
+            parameters:
+            -   format: int32
+                in: path
+                name: !!python/object/new:textblob.blob.Word
+                    args: [id]
+                    state:
+                        pos_tag: NN
+                        string: !!python/object/new:textblob.blob.Word
+                            args: [id]
+                            state: {pos_tag: null, string: id}
+                required: true
+                type: integer
+            responses:
+                '401': {description: You are unauthorized to make this request.}
+                '404': {description: List doesn't exist}
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/list_get_default_response'}
+        put:
+            description: "- \tChange a name of a single list."
+            parameters:
+            -   format: int32
+                in: path
+                name: !!python/object/new:textblob.blob.Word
+                    args: [id]
+                    state: *id009
+                required: true
+                type: integer
+            -   in: body
+                name: list_put_request_body
+                schema: {$ref: '#/definitions/list_put_request_body'}
+            responses:
+                '200': {description: Listname changed successfully}
+                '404': {description: List doesn't exist}
+    /user/{id}/list/{id}/comment:
+        post:
+            description: "- \tComment a list of a particular user."
+            parameters:
+            -   in: body
+                name: comment_post_request_body
+                required: true
+                schema: {$ref: '#/definitions/comment_post_request_body'}
+            - *id008
+            responses:
+                '200': {description: List commented successfully}
+    /user/{id}/list/{id}/rate:
+        post:
+            parameters:
+            -   in: body
+                name: rate_post_request_body
+                required: true
+                schema: {$ref: '#/definitions/rate_post_request_body'}
+            - *id008
+            responses:
+                '200': {description: 'OK, list rated'}
+                '401': {description: You are unauthorized to make this request.}
+                '404': {description: List doesn't exist}
+produces: [application/json]
+schemes: [https, http]
+securityDefinitions:
+    ? !!python/object/new:textblob.blob.Word
+        args: [administrator]
+        state: *id010
+    :   authorizationUrl: http://swagger.io/api/oauth/dialog
+        flow: implicit
+        scopes: {'post:/user': No description}
+        type: oauth2
+    ? !!python/object/new:textblob.blob.Word
+        args: [system]
+        state: *id006
+    :   authorizationUrl: http://swagger.io/api/oauth/dialog
+        flow: implicit
+        scopes: {'get:/admin/{id}': No description, 'post:/admin': No description}
+        type: oauth2
+swagger: '2.0'

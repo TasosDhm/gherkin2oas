@@ -1,0 +1,878 @@
+{
+    "paths": {
+        "/user/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "status",
+                        "type": "string",
+                        "required": false,
+                        "in": "query"
+                    }
+                ],
+                "description": "- \tShows details of single user\n- \tReturns status about a single user. Valid status requests are 'online', 'offline', 'away' and\n\t'busy'. The response will be \"is <user's status>\"",
+                "responses": {
+                    "default": {
+                        "description": "None",
+                        "schema": {
+                            "$ref": "#/definitions/user_get_default_response"
+                        }
+                    },
+                    "401": {
+                        "description": "You are unauthorized to make this request."
+                    },
+                    "404": {
+                        "description": "User doesn't exist"
+                    }
+                }
+            },
+            "put": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "user_put_request_body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/user_put_request_body"
+                        }
+                    }
+                ],
+                "description": "- \tUpdate your user profile\n- \tGive trophy to particular user.",
+                "responses": {
+                    "401": {
+                        "description": "You are unauthorized to make this request."
+                    },
+                    "404": {
+                        "description": "User doesn't exist"
+                    },
+                    "200": {
+                        "description": "Successfully updated"
+                    }
+                }
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "description": "- \tDeletes a single user",
+                "responses": {
+                    "401": {
+                        "description": "You are unauthorized to make this request."
+                    },
+                    "404": {
+                        "description": "User doesn't exist"
+                    },
+                    "200": {
+                        "description": "User deleted successfully"
+                    }
+                }
+            }
+        },
+        "/user": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "user_post_request_body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/user_post_request_body"
+                        }
+                    }
+                ],
+                "description": "- \tCreates a single user",
+                "responses": {
+                    "200": {
+                        "description": "Successfull new account"
+                    },
+                    "401": {
+                        "description": "You are unauthorized to make this request."
+                    }
+                },
+                "security": [
+                    {
+                        "administrator": [
+                            "post:/user"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/user/{id}/follow_list": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "follow_list_post_request_body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/follow_list_post_request_body"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/user/{id}/list/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "description": "- \tReturns a single list of a particular user.",
+                "responses": {
+                    "default": {
+                        "description": "None",
+                        "schema": {
+                            "$ref": "#/definitions/list_get_default_response"
+                        }
+                    },
+                    "404": {
+                        "description": "List doesn't exist"
+                    },
+                    "401": {
+                        "description": "You are unauthorized to make this request."
+                    }
+                }
+            },
+            "put": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "list_put_request_body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/list_put_request_body"
+                        }
+                    }
+                ],
+                "description": "- \tChange a name of a single list.",
+                "responses": {
+                    "404": {
+                        "description": "List doesn't exist"
+                    },
+                    "200": {
+                        "description": "Listname changed successfully"
+                    }
+                }
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "description": "- \tDelete a single list of a particular user.",
+                "responses": {
+                    "404": {
+                        "description": "List doesn't exist"
+                    },
+                    "401": {
+                        "description": "You are unauthorized to make this request."
+                    },
+                    "200": {
+                        "description": "List deleted successfully"
+                    }
+                }
+            }
+        },
+        "/user/{id}/list": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "list_post_request_body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/list_post_request_body"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "description": "- \tCreate a new single list for a user.\n- \tReturns all lists of a particular user.",
+                "responses": {
+                    "201": {
+                        "description": "List created"
+                    },
+                    "404": {
+                        "description": "List not created"
+                    },
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "You are unauthorized to make this request."
+                    }
+                }
+            }
+        },
+        "/user/{id}/list/{id}/comment": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "comment_post_request_body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/comment_post_request_body"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "description": "- \tComment a list of a particular user.",
+                "responses": {
+                    "200": {
+                        "description": "List commented successfully"
+                    }
+                }
+            }
+        },
+        "/user/{id}/list/{id}/rate": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "rate_post_request_body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/rate_post_request_body"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK, list rated"
+                    },
+                    "404": {
+                        "description": "List doesn't exist"
+                    },
+                    "401": {
+                        "description": "You are unauthorized to make this request."
+                    }
+                }
+            }
+        },
+        "/admin/{admin_id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "admin_id",
+                        "required": true,
+                        "format": "int32",
+                        "in": "path"
+                    }
+                ],
+                "description": "- \tReturns data about a single administrator.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/admin_get_200_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Admin doesn't exist"
+                    }
+                },
+                "security": [
+                    {
+                        "system": [
+                            "get:/admin/{id}"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/admin": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "admin_post_request_body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/admin_post_request_body"
+                        },
+                        "required": true
+                    }
+                ],
+                "description": "- \tCreates a new single administrator.",
+                "responses": {
+                    "200": {
+                        "description": "Successfull new admin account"
+                    }
+                },
+                "security": [
+                    {
+                        "system": [
+                            "post:/admin"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/search": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "username",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "listname",
+                        "type": "string",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "date of release",
+                        "type": "string",
+                        "format": "date",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "ratio",
+                        "type": "integer",
+                        "format": "int32",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "sort",
+                        "type": "string",
+                        "required": false,
+                        "in": "query"
+                    }
+                ],
+                "description": "- \tReturns data about a single user.\n- \tReturns data about a single list.\n- \tReturns data about a single list.\n- \tReturns the lists with the bigest ratio.",
+                "responses": {
+                    "default": {
+                        "description": "None",
+                        "schema": {
+                            "$ref": "#/definitions/search_get_default_response"
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/search_get_200_response"
+                        }
+                    },
+                    "401": {
+                        "description": "You are unauthorized to make this request."
+                    },
+                    "404": {
+                        "description": "none found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "admin_post_request_body": {
+            "type": "object",
+            "properties": {
+                "administrator": {
+                    "$ref": "#/definitions/administrator"
+                }
+            },
+            "required": [
+                "administrator"
+            ]
+        },
+        "administrator": {
+            "type": "object",
+            "properties": {
+                "admin name": {
+                    "type": "string"
+                },
+                "admin id": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            },
+            "example": [
+                {
+                    "admin name": "ADMIN01",
+                    "admin id": 1
+                }
+            ]
+        },
+        "comment_post_request_body": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "$ref": "#/definitions/comment"
+                }
+            },
+            "required": [
+                "comment"
+            ]
+        },
+        "comment": {
+            "type": "object",
+            "properties": {
+                "comment content": {
+                    "type": "string"
+                },
+                "comment id": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            },
+            "example": [
+                {
+                    "comment content": "I like most of your list",
+                    "comment id": 12
+                }
+            ]
+        },
+        "follow_list_post_request_body": {
+            "type": "object",
+            "properties": {
+                "followlist": {
+                    "$ref": "#/definitions/followlist"
+                }
+            },
+            "required": [
+                "followlist"
+            ]
+        },
+        "followlist": {
+            "type": "object",
+            "properties": {
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "maxItems": 10000
+                }
+            },
+            "example": [
+                {
+                    "users": [
+                        1,
+                        5,
+                        7,
+                        12,
+                        10
+                    ]
+                }
+            ]
+        },
+        "list_post_request_body": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "listname": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "date of release": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "all": {
+                    "type": "boolean"
+                }
+            },
+            "example": [
+                {
+                    "id": 30,
+                    "category": "series",
+                    "listname": "top 10 series",
+                    "description": "Best series since 1990",
+                    "date of release": "05/06/2010",
+                    "tag": "mystery"
+                },
+                {
+                    "all": true
+                }
+            ]
+        },
+        "list_put_request_body": {
+            "type": "object",
+            "properties": {
+                "listname": {
+                    "type": "string"
+                }
+            },
+            "example": [
+                {
+                    "listname": "movies"
+                }
+            ]
+        },
+        "rate_post_request_body": {
+            "type": "object",
+            "properties": {
+                "rating": {
+                    "$ref": "#/definitions/rating"
+                }
+            },
+            "required": [
+                "rating"
+            ]
+        },
+        "rating": {
+            "type": "object",
+            "properties": {
+                "ratio": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ratio id": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            },
+            "example": [
+                {
+                    "ratio": 7,
+                    "ratio id": 4
+                }
+            ]
+        },
+        "user_post_request_body": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "$ref": "#/definitions/user"
+                }
+            }
+        },
+        "user": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "format": "password"
+                },
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "date of birth": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "sex": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "trophy": {
+                    "type": "string"
+                }
+            },
+            "example": [
+                {
+                    "email": "anasdima@ece.auth.gr",
+                    "username": "Tasos",
+                    "id": 250,
+                    "date of birth": "04/05/1992",
+                    "sex": "male",
+                    "location": "Thessaloniki",
+                    "photo": "http://photo.com/myphoto",
+                    "status": "online",
+                    "trophy": "name"
+                }
+            ]
+        },
+        "user_put_request_body": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "format": "password",
+                    "minLength": 8
+                },
+                "date of birth": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "sex": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "photo": {
+                    "type": "string"
+                },
+                "trophy": {
+                    "type": "string"
+                }
+            },
+            "example": [
+                {
+                    "username": "Nick",
+                    "date of birth": "09-08-1002",
+                    "sex": "Male",
+                    "location": "Sweden",
+                    "photo": "http://imgur.com/rand_photo"
+                },
+                {
+                    "trophy": "trophytype"
+                }
+            ]
+        },
+        "admin_get_200_response": {
+            "type": "object",
+            "properties": {
+                "admin_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "username": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "admin_id",
+                "username"
+            ],
+            "example": [
+                {
+                    "admin_id": 123,
+                    "username": "Kostas Sotiriou"
+                }
+            ]
+        },
+        "list_get_default_response": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "search_get_default_response": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "date of birth": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "date of release": {
+                    "type": "string",
+                    "format": "date"
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "example": [
+                {
+                    "email": "anasdima@ece.auth.gr",
+                    "username": "Tasos",
+                    "id": 250,
+                    "date of birth": "04/05/1992"
+                },
+                {
+                    "id": 30,
+                    "category": "series",
+                    "description": "Best series since 1990"
+                },
+                {
+                    "id": 30,
+                    "category": "series",
+                    "description": "Best series since 1990",
+                    "date of release": "05/06/2010"
+                }
+            ]
+        },
+        "search_get_200_response": {
+            "type": "object",
+            "properties": {
+                "sorted list": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "maxItems": 15
+                }
+            },
+            "required": [
+                "sorted list"
+            ],
+            "example": [
+                {
+                    "sorted list": [
+                        "highest ratio listname",
+                        "medium ratio listname",
+                        "lowest ratio listname"
+                    ]
+                }
+            ]
+        },
+        "user_get_default_response": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "username"
+            ],
+            "example": [
+                {
+                    "username": "Tasos"
+                },
+                {
+                    "username": "Michalis Pap ",
+                    "status": "is online"
+                }
+            ]
+        }
+    },
+    "securityDefinitions": {
+        "system": {
+            "type": "oauth2",
+            "flow": "implicit",
+            "authorizationUrl": "http://swagger.io/api/oauth/dialog",
+            "scopes": {
+                "post:/admin": "No description",
+                "get:/admin/{id}": "No description"
+            }
+        },
+        "administrator": {
+            "type": "oauth2",
+            "flow": "implicit",
+            "authorizationUrl": "http://swagger.io/api/oauth/dialog",
+            "scopes": {
+                "post:/user": "No description"
+            }
+        }
+    },
+    "swagger": "2.0",
+    "info": {
+        "title": "Example API",
+        "description": "Demo",
+        "version": "1",
+        "termsOfService": ""
+    },
+    "host": "localhost",
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "basePath": "/v1",
+    "produces": [
+        "application/json"
+    ]
+}

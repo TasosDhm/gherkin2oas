@@ -1,0 +1,11 @@
+[INFO]
+title = Example API
+description = Demo
+version = 1
+termsOfService = 
+
+[BASEPATH] 
+basePath = /v1
+
+[HOST]
+host = localhost

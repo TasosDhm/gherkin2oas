@@ -1,0 +1,430 @@
+basePath: /v1
+definitions:
+    ? !!python/object/new:textblob.blob.Word
+        args: [basket]
+        state: &id002
+            pos_tag: NN
+            string: !!python/object/new:textblob.blob.Word
+                args: [basket]
+                state: {pos_tag: null, string: basket}
+    :   example:
+        -   basket id: 1
+            product ids: [14556, 14777, 12001, 12451]
+            quantities: [1, 1, 1, 2]
+        properties:
+            basket id: {format: int32, type: integer}
+            product ids:
+                items: {format: int32, type: integer}
+                maxItems: 100
+                type: array
+            quantities:
+                description: list of quantities, one for each product
+                items: {format: int32, type: integer}
+                maxItems: 100
+                type: array
+        type: object
+    basket_get_default_response:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [basket]
+                state: &id001
+                    pos_tag: NN
+                    string: !!python/object/new:textblob.blob.Word
+                        args: [basket]
+                        state: {pos_tag: null, string: basket}
+            : {$ref: '#/definitions/basket'}
+        required:
+        - !!python/object/new:textblob.blob.Word
+            args: [basket]
+            state: *id001
+        type: object
+        x-links:
+        - {operation: post, path: /order}
+        - {operation: get, path: '/basket/{basket_id}'}
+    basket_post_default_response:
+        example:
+        -   basket id: 1
+            product ids: [14556, 14777, 12001, 12451]
+            quantities: [1, 1, 1, 2]
+        properties:
+            basket id: {format: int32, type: integer}
+            product ids:
+                items: {format: int32, type: integer}
+                maxItems: 100
+                type: array
+            quantities:
+                items: {format: int32, type: integer}
+                maxItems: 100
+                type: array
+        required: [product ids, quantities, basket id]
+        type: object
+        x-links:
+        - {operation: post, path: /order}
+        - {operation: get, path: '/basket/{basket_id}'}
+    basket_post_request_body:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [basket]
+                state: *id002
+            : {$ref: '#/definitions/basket'}
+        required:
+        - !!python/object/new:textblob.blob.Word
+            args: [basket]
+            state: *id002
+        type: object
+    basket_put_default_response:
+        example:
+        -   product ids: [1, 4, 7, 7, 7]
+            quantity: 4
+        properties:
+            product ids:
+                items: {format: int32, type: integer}
+                type: array
+            quantity: {format: int32, type: integer}
+        required: [product ids, quantity]
+        type: object
+        x-links:
+        - {operation: post, path: /order}
+        - {operation: get, path: '/basket/{basket_id}'}
+    basket_put_request_body:
+        example:
+        - {product id: 14777, quantity: 3}
+        properties:
+            product id: {format: int32, type: integer}
+            quantity: {format: int32, type: integer}
+        required: [product id, quantity]
+        type: object
+    order_delete_200_response:
+        type: object
+        x-links:
+        - {operation: get, path: /search}
+    order_get_default_response:
+        example:
+        -   product descriptions: [Made in Stockholm, Mechanical, IPS Screen]
+            product names: [Chair, Keyboard, Dell Laptop]
+        properties:
+            product descriptions:
+                items: {type: string}
+                type: array
+            product names:
+                items: {type: string}
+                type: array
+        type: object
+        x-links:
+        - {operation: post, path: '/order/{order_id}/payment'}
+        - {operation: get, path: '/order/{order_id}'}
+        - {operation: delete, path: '/order/{order_id}'}
+        - {operation: put, path: '/order/{order_id}'}
+    order_post_200_response:
+        type: object
+        x-links:
+        - {operation: post, path: '/order/{order_id}/payment'}
+        - {operation: get, path: '/order/{order_id}'}
+        - {operation: delete, path: '/order/{order_id}'}
+        - {operation: put, path: '/order/{order_id}'}
+    order_put_200_response:
+        type: object
+        x-links:
+        - {operation: post, path: '/order/{order_id}/payment'}
+        - {operation: get, path: '/order/{order_id}'}
+        - {operation: delete, path: '/order/{order_id}'}
+        - {operation: put, path: '/order/{order_id}'}
+    order_put_request_body:
+        example:
+        -   product ids: [3433, 1212, 1276]
+            quantities: [1, 1, 1, 2]
+        properties:
+            product ids:
+                items: {format: int32, type: integer}
+                type: array
+            quantities:
+                items: {format: int32, type: integer}
+                maxItems: 100
+                type: array
+        type: object
+    payment_post_400_response:
+        type: object
+        x-links:
+        - {operation: post, path: '/order/{order_id}/payment'}
+        - {operation: get, path: '/order/{order_id}'}
+    payment_post_default_response:
+        type: object
+        x-links:
+        - {operation: get, path: '/order/{order_id}'}
+    payment_post_request_body:
+        example:
+        - {amount: 28.2, date: '8/2/2017 12:32', type: credit}
+        properties:
+            amount: {format: float, type: number}
+            date: {format: date-time, type: string}
+            type: {type: string}
+        type: object
+    ? !!python/object/new:textblob.blob.Word
+        args: [product]
+        state: &id003
+            pos_tag: NN
+            string: !!python/object/new:textblob.blob.Word
+                args: [product]
+                state: {pos_tag: null, string: product}
+    :   example:
+        - {available in: 48, category: furniture, color: Deep dark brown, cost: 15000.1,
+            description: Made in Stockholm, doa: 7, id: 45, name: Chair, on sale: false,
+            shipping: worldwide}
+        properties:
+            available in: {format: int32, type: integer}
+            category: {type: string}
+            color: {type: string}
+            cost: {format: float, type: number}
+            description: {type: string}
+            doa: {format: int32, type: integer}
+            id: {format: int32, type: integer}
+            name: {type: string}
+            on sale: {type: boolean}
+            shipping: {type: string}
+        type: object
+    product_delete_default_response:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [product]
+                state:
+                    pos_tag: NN
+                    string: !!python/object/new:textblob.blob.Word
+                        args: [product]
+                        state: {pos_tag: null, string: product}
+            : {$ref: '#/definitions/product'}
+        type: object
+    product_get_default_response:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [product]
+                state:
+                    pos_tag: NN
+                    string: !!python/object/new:textblob.blob.Word
+                        args: [product]
+                        state: {pos_tag: null, string: product}
+            : {$ref: '#/definitions/product'}
+        type: object
+        x-links:
+        - {operation: post, path: /basket}
+    product_post_default_response:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [product]
+                state:
+                    pos_tag: NN
+                    string: !!python/object/new:textblob.blob.Word
+                        args: [product]
+                        state: {pos_tag: null, string: product}
+            : {$ref: '#/definitions/product'}
+        type: object
+    product_post_request_body:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [product]
+                state: *id003
+            : {$ref: '#/definitions/product'}
+        type: object
+    product_put_default_response:
+        example:
+        - {category: sports, description: small bag, name: bag}
+        properties:
+            category: {type: string}
+            description: {type: string}
+            name: {type: string}
+        required: [name, description, category]
+        type: object
+    product_put_request_body:
+        properties:
+            ? !!python/object/new:textblob.blob.Word
+                args: [description]
+                state:
+                    pos_tag: NN
+                    string: !!python/object/new:textblob.blob.Word
+                        args: [description]
+                        state: {pos_tag: null, string: description}
+            : {type: string}
+            ? !!python/object/new:textblob.blob.Word
+                args: [product]
+                state:
+                    pos_tag: NN
+                    string: !!python/object/new:textblob.blob.Word
+                        args: [product]
+                        state: {pos_tag: null, string: product}
+            : {$ref: '#/definitions/product'}
+        type: object
+    search_get_default_response:
+        example:
+        - {name: keyboard, price: 69.99}
+        properties:
+            name: {type: string}
+            price: {format: float, type: number}
+        required: [name, price]
+        type: object
+        x-links:
+        - {operation: get, path: '/product/{product_id}'}
+host: localhost
+info: {description: Demo, termsOfService: '', title: Example API, version: '1'}
+paths:
+    /basket:
+        post:
+            parameters:
+            -   in: body
+                name: basket_post_request_body
+                required: true
+                schema: {$ref: '#/definitions/basket_post_request_body'}
+            responses:
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/basket_post_default_response'}
+        put:
+            parameters:
+            -   in: body
+                name: basket_put_request_body
+                required: true
+                schema: {$ref: '#/definitions/basket_put_request_body'}
+            responses:
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/basket_put_default_response'}
+    /basket/{basket_id}:
+        get:
+            parameters:
+            - {format: int32, in: path, name: basket_id, required: true, type: integer}
+            responses:
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/basket_get_default_response'}
+    /order:
+        post:
+            consumes: [multipart/form-data, application/x-www-form-urlencoded]
+            parameters:
+            - {in: formData, name: order document, required: true, type: file}
+            responses:
+                '200':
+                    description: Order created successfully
+                    schema: {$ref: '#/definitions/order_post_200_response'}
+    /order/{order_id}:
+        delete:
+            parameters:
+            - {format: int32, in: path, name: order_id, required: true, type: integer}
+            responses:
+                '200':
+                    description: Order canceled
+                    schema: {$ref: '#/definitions/order_delete_200_response'}
+                '404': {description: That order doesn't exist}
+        get:
+            parameters:
+            - {format: int32, in: path, name: order_id, required: true, type: integer}
+            responses:
+                '404': {description: That order doesn't exist}
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/order_get_default_response'}
+        put:
+            parameters:
+            -   in: body
+                name: order_put_request_body
+                schema: {$ref: '#/definitions/order_put_request_body'}
+            - {format: int32, in: path, name: order_id, required: true, type: integer}
+            responses:
+                '200':
+                    description: Order updated
+                    schema: {$ref: '#/definitions/order_put_200_response'}
+                '404': {description: That order doesn't exist}
+    /order/{order_id}/payment:
+        post:
+            description: "- \tPossible payment options are 'credit', 'cash', 'paypal'"
+            parameters:
+            -   in: body
+                name: payment_post_request_body
+                schema: {$ref: '#/definitions/payment_post_request_body'}
+            - {format: int32, in: path, name: order_id, required: true, type: integer}
+            responses:
+                '400':
+                    description: wrong amount
+                    schema: {$ref: '#/definitions/payment_post_400_response'}
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/payment_post_default_response'}
+    /product:
+        delete:
+            parameters:
+            - {in: query, name: name, required: false, type: string}
+            - {in: query, name: category, required: false, type: string}
+            responses:
+                '404': {description: the product doesn't exist}
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/product_delete_default_response'}
+            security:
+            -   ? !!python/object/new:textblob.blob.Word
+                    args: [administrator]
+                    state: &id004
+                        pos_tag: NN
+                        string: !!python/object/new:textblob.blob.Word
+                            args: [administrator]
+                            state: {pos_tag: null, string: administrator}
+                : ['delete:/product']
+        post:
+            parameters:
+            -   in: body
+                name: product_post_request_body
+                schema: {$ref: '#/definitions/product_post_request_body'}
+            responses:
+                '404': {description: Not allowed}
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/product_post_default_response'}
+            security:
+            -   ? !!python/object/new:textblob.blob.Word
+                    args: [administrator]
+                    state: *id004
+                : ['post:/product']
+        put:
+            parameters:
+            -   in: body
+                name: product_put_request_body
+                schema: {$ref: '#/definitions/product_put_request_body'}
+            responses:
+                '404': {description: the product doesn't exist}
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/product_put_default_response'}
+            security:
+            -   ? !!python/object/new:textblob.blob.Word
+                    args: [administrator]
+                    state: *id004
+                : ['put:/product']
+    /product/{product_id}:
+        get:
+            parameters:
+            - {format: int32, in: path, name: product_id, required: true, type: integer}
+            responses:
+                '404': {description: the product doesn't exist}
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/product_get_default_response'}
+    /search:
+        get:
+            description: "- \tThe user is able to search for products in the website\
+                \ using name and/or category filter, view their general details and\
+                \ choose to view their\n\tspecific details"
+            parameters:
+            - {in: query, name: name, required: true, type: string}
+            - {in: query, name: category, required: true, type: string}
+            responses:
+                default:
+                    description: None
+                    schema: {$ref: '#/definitions/search_get_default_response'}
+produces: [application/json]
+schemes: [https, http]
+securityDefinitions:
+    ? !!python/object/new:textblob.blob.Word
+        args: [administrator]
+        state: *id004
+    :   authorizationUrl: http://swagger.io/api/oauth/dialog
+        flow: implicit
+        scopes: {'delete:/product': No description, 'post:/product': No description,
+            'put:/product': No description}
+        type: oauth2
+swagger: '2.0'

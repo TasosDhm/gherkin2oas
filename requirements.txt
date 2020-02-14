@@ -1,0 +1,8 @@
+gherkin-official
+nltk
+openapi_spec_validator
+textblob
+inflect
+pyyaml
+python-dateutil
+graphviz
