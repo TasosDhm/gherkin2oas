@@ -404,6 +404,18 @@ def generate_swagger(model, security):
                 new_x_links.append({'path':re.sub(r'([^/]+)/{id}', rep, x_link['path']),'operation':x_link['operation']})
             definitions_object[definition]['x-links'] = new_x_links
 
+    # remove duplicate parameters from queries, if any
+    for path in paths_object:
+        for operation in paths_object[path]:
+            if operation == "get":
+                unique_parameter_list = []
+                print(paths_object[path][operation])
+                for parameter in paths_object[path][operation]['parameters']:
+                    if parameter not in unique_parameter_list:
+                        unique_parameter_list.append(parameter)
+                paths_object[path][operation]['parameters'] = unique_parameter_list
+            
+
     return {'paths':paths_object,'definitions':definitions_object,'securityDefinitions':security_definitions_object, 'security':security_object}
 
 def flatten(container):
