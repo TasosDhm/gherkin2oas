@@ -409,7 +409,6 @@ def generate_swagger(model, security):
         for operation in paths_object[path]:
             if operation == "get":
                 unique_parameter_list = []
-                print(paths_object[path][operation])
                 for parameter in paths_object[path][operation]['parameters']:
                     if parameter not in unique_parameter_list:
                         unique_parameter_list.append(parameter)
