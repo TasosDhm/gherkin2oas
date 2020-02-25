@@ -413,6 +413,15 @@ def detect_operations(sentence,resource_names,step_type):
     elif step_type == 'Then':
         detected_verbs = detect_http_verbs(sentence)
         for resource_name in resource_names:
+            resource_name_parts = resource_name.split(' ')
+            if len(resource_name_parts) > 1:
+                if all(re.search(r'\b' + part + r'\b',sentence) for part in resource_name_parts):
+                    hateoas_links = []
+                    for detected_verb in detected_verbs:
+                        compact_resource_name = '_'.join(resource_name.split(' ')) # paths can't have spaces in them
+                        hateoas_links.append({'natural_resource_name':resource_name,'path':compact_resource_name,'natural_verb':detected_verb['natural'], 'operation':detected_verb['http']})
+                    return hateoas_links
+        for resource_name in resource_names:
             if re.search(r'\b' + resource_name + r'\b',sentence) and not any(verb['natural'] == resource_name for verb in detected_verbs):
                 hateoas_links = []
                 for detected_verb in detected_verbs:
