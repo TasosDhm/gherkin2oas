@@ -441,9 +441,11 @@ def detect_parameters(sentence,resource_names):
 
 def detect_model_name(sentence):
     tagged_tokens = TextBlob(sentence).tags
+    detected_nouns = []
     for tagged_token in tagged_tokens: # a tagged token has the word at position 0 and the tag at position 1
         if tagged_token[1][0:2] == 'NN':
-            return tagged_token[0]
+            detected_nouns.append(tagged_token[0])
+    return "_".join(detected_nouns)
 
 def detect_http_verbs(sentence):
     tagged_tokens = TextBlob(sentence).tags
@@ -498,7 +500,6 @@ def analyze_data_table(table,operation):
                     for top_row_cell,fourth_row_cell in zip(top_row,fourth_row):
                         domain = detect_min_max_cell(top_row_cell,fourth_row_cell,domain)
             else:
-                print('asasdsad')
                 sys.exit("Incorrect table format")
         else:
             for cell in top_row:
@@ -558,46 +559,56 @@ def figure_cell_type(parameter_cell,type_cell,operation):
             example = {'name':parameter_cell, 'value':True}
         else:
             example = {'name':parameter_cell, 'value':False}
-    elif is_array(type_cell):                     
-        content = is_array(type_cell)[0]
+    elif is_array(type_cell):                   
+        content = eval(type_cell)
         values = []
-        collection_format = ''
-        if ',' in content:
-            collection_format = 'csv'
-            values = content.split(',')                            
-        elif ' ' in content:
-            collection_format = 'ssv'
-            values = content.split(' ')
-        elif '\t' in content:
-            collection_format = 'tsv'
-            values = content.split('\t')
-        elif '|' in content:
-            collection_format = 'pipes'
-            values = content.split('|')
-        else:
-            collection_format = 'unknown'
-            values = content
-        types = type_of_value(values[0]) # assuming that user did not submit an array with different data types
+        collection_format = 'unknown'
+        types = None
         example = {'name':parameter_cell, 'value':[]}
+        # print(content[0], type(content[0]))
+        if type(content[0]) is list:
+            types = list
+            for item in content:
+                example["value"].append(item)
+        else:
+            # if ',' in content:
+            #     collection_format = 'csv'
+            #     values = content.split(',')                            
+            # elif ' ' in content:
+            #     collection_format = 'ssv'
+            #     values = content.split(' ')
+            # elif '\t' in content:
+            #     collection_format = 'tsv'
+            #     values = content.split('\t')
+            # elif '|' in content:
+            #     collection_format = 'pipes'
+            #     values = content.split('|')
+            # else:
+            #     collection_format = 'unknown'
+            #     values = content
+            types = type_of_value(content[0]) # assuming that user did not submit an array with different data types
         if types is float:
             domain = {'name':parameter_cell,'type':'array','collectionFormat':collection_format,'items':{'type':'number','format':'float'}}
-            for item in values:
+            for item in content:
                 example['value'].append(ast.literal_eval(item))
         elif types is int:
             domain = {'name':parameter_cell,'type':'array','collectionFormat':collection_format,'items':{'type':'integer','format':'int32'}}
-            for item in values:
+            for item in content:
                 example['value'].append(ast.literal_eval(item))
         elif types is bool:
             domain = {'name':parameter_cell,'type':'array','collectionFormat':collection_format,'items':{'type':'boolean'}}
-            for item in values:
+            for item in content:
                 if item == 'true':
                     example['value'].append(True)
                 else:
                     example['value'].append(False)
+        elif types is list:
+            domain = {'name':parameter_cell,'type':'array','collectionFormat':collection_format,'items':{'type':'array'}}
         else:
             domain = {'name':parameter_cell,'type':'array','collectionFormat':collection_format,'items':{'type':'string'}}
-            for item in values:
-                example['value'].append(item[1:-1]) # strip quotes
+            for item in content:
+                # print(item[1:-1])
+                example['value'].append(item) # strip quotes
     else:
         if is_password(type_cell) and\
         (operation != 'delete' and operation != 'get'):
@@ -773,7 +784,7 @@ def detect_phrase(text,phrases):
 
 def type_of_value(var):
     try:
-       return type(ast.literal_eval(var))
+        return type(ast.literal_eval(var))
     except Exception:
         if var == 'true' or var == 'false':
             return bool
