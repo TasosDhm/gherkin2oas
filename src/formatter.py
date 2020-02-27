@@ -3,7 +3,7 @@ import nlp
 import sys
 import json
 
-http_codes = {'OK': '200', 'Created':'201', 'Accepted':'202', 'Bad Request': '400', 'Unauthorized': '401', 'Not Found': '404', 'default': 'default'}
+http_codes = {'OK': '200', 'Created':'201', 'Accepted':'202', 'Bad Request': '400', 'Unauthorized': '401', 'Not Found': '404', 'Forbidden': '403', 'default': 'default'}
 ids=[]
 
 def generate_swagger(model, security):

@@ -23,12 +23,34 @@ HTTP_verbs = {
 'delete': ["delete", "destroy", "kill", "remove","cancel"]}
 
 # response code lists
-L404 = ['not found','doesn\'t exist','does not exist','unable to find','can\'t find','no', 'didn\'t find', 'did not find', 'none found', 'none was found']
-L401 = ['unauthorized','not allowed','rejected','denied']
-L400 = ['failed','unsuccessful','wrong','mistake','error','not']
-L200 = ['success','ok','updated','deleted','retrieved','canceled']
-L201 = ['created']
-L202 = ['accepted']
+L404 = {
+    "en" : ['not found','doesn\'t exist','does not exist','unable to find','can\'t find','no', 'didn\'t find', 'did not find', 'none found', 'none was found'],
+    "el" : ['Δεν βρέθηκε', 'Δεν βρήκαμε', 'Μη υπαρκτό']
+    }
+L401 = {
+    "en" : ['unauthorized'],
+    "el" : ['δεν είναι συνδεδεμένος', 'δεν είναι συνδεδεμένη', 'δεν έχει συνδεθεί']
+    }
+L403 = {
+    "en" : ['not allowed', 'rejected', 'denied', 'not approved', 'forbidden'],
+    "el" : ['δεν επιτρέπεται', 'απορρίπτεται', 'απαγορεύεται', 'μη εξουσιοδοτημένο', 'μη εξουσιοδοτημένη', 'μη εξουσιοδοτημένος', 'μη επιτρεπτό']    
+}
+L400 = {
+    "en" : ['failed','unsuccessful','wrong','mistake','error','not'],
+    "el" : ['λανθασμένο', 'ελλειπές', 'πρόβλημα', 'λάθος']
+    }
+L200 = {
+    "en" : ['success','ok','updated','deleted','retrieved','canceled'],
+    "el" : ['επιτυχές', 'επιτυχής', 'επιτυχία', 'ok', 'οκ', 'διαγράφηκε', 'ανακτήθηκε', 'ακυρώθηκε']
+    }
+L201 = {
+    "en" : ['created'],
+    "el" : ['δημηουργήθηκε']
+    }
+L202 = {
+    "en" : ['accepted'],
+    "el" : ['αποδεκτό']
+    }
 
 # phrase lists
 maximum_phrases = ['max', 'maximum', 'cannot be more than',\
@@ -384,15 +406,18 @@ def detect_messages(sentence):
     if quoted_phrase:
         plain_phrase = quoted_phrase[0].lower()
         message['text'] = quoted_phrase[0]
-        if ([text for text in L404 if re.search(text,plain_phrase)]):
+        language = TextBlob(message['text']).detect_language() # Requires internet connection since it uses the google translator API
+        if ([text for text in L404[language] if re.search(text,plain_phrase)]):
             message['type'] = 'Not Found'
-        elif ([text for text in L401 if re.search(text,plain_phrase)]):
+        elif ([text for text in L401[language] if re.search(text,plain_phrase)]):
             message['type'] = 'Unauthorized'
-        elif ([text for text in L400 if re.search(text,plain_phrase)]):
+        elif ([text for text in L403[language] if re.search(text,plain_phrase)]):
+            message['type'] = 'Forbidden'
+        elif ([text for text in L400[language] if re.search(text,plain_phrase)]):
             message['type'] = 'Bad Request'
-        elif ([text for text in L200 if re.search(text,plain_phrase)]):
+        elif ([text for text in L200[language] if re.search(text,plain_phrase)]):
             message['type'] = 'OK'
-        elif ([text for text in L201 if re.search(text,plain_phrase)]):
+        elif ([text for text in L201[language] if re.search(text,plain_phrase)]):
             message['type'] = 'Created'
         elif ([text for text in L202 if re.search(text,plain_phrase)]):
             message['type'] = 'Accepted'
@@ -603,7 +628,7 @@ def figure_cell_type(parameter_cell,type_cell,operation):
                 else:
                     example['value'].append(False)
         elif types is list:
-            domain = {'name':parameter_cell,'type':'array','collectionFormat':collection_format,'items':{'type':'array'}}
+            domain = {'name':parameter_cell,'type':'array','collectionFormat':collection_format,'items':{'type':'array', 'items' : {'type' : 'string'}}}
         else:
             domain = {'name':parameter_cell,'type':'array','collectionFormat':collection_format,'items':{'type':'string'}}
             for item in content:
