@@ -89,8 +89,11 @@ with open(args['folder'] + '/output_files/swagger-oas2/swagger.json', 'w') as ou
 
 import subprocess
 subprocess.run(["swagger2openapi.cmd", args['folder'] + '/output_files/swagger-oas2/swagger.json', "-o", args['folder'] + '/output_files/oas3/swagger.json'])
-# with open(args['folder'] + '/output_files/oas3/swagger.json', 'r') as inputfile:
-#     validate_spec(json.load(inputfile))
+with open(args['folder'] + '/output_files/oas3/swagger.json', 'r', encoding='utf-8') as inputfile:
+    # spec = json.load(inputfile)
+    # for oas_field in spec:
+    #     i
+    validate_spec(json.load(inputfile))
 # subprocess.run(["swagger2openapi.cmd", args['folder'] + '/output_files/swagger-oas2/swagger.yaml', "-o", args['folder'] + '/output_files/oas3/swagger.yaml'])
 
 elapsed_time = time.time() - start_time
